@@ -1,0 +1,27 @@
+<header class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+  <span class="navbar-brand"> {{ this.proyectosService.nameItem }} </span>
+</header>
+
+<main class="m-5 d-grid gap-3">
+  <!-- Formulario para agregar un nuevo proyecto -->
+  <form #projectForm="ngForm" (ngSubmit)="onSubmit(projectForm)">
+    <div class="mb-3">
+      <label for="projectName" class="form-label">Agregar Nuevo Proyecto</label>
+      <input
+        class="form-control"
+        type="text"
+        id="projectName"
+        name="projectName"
+        ngModel
+      />
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="getTodos()">
+      Enviar
+    </button>
+  </form>
+  @for (item of ''; track item) {
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ item }}
+  </li>
+  }
+</main>

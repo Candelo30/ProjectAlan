@@ -1,0 +1,76 @@
+<header class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+  <span class="navbar-brand">Gestión de Proyectos</span>
+</header>
+
+<main class="m-5 d-grid gap-3">
+  <form #projectForm="ngForm" (ngSubmit)="onSubmit(projectForm)">
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Agregar Nuevo Proyecto</label>
+      <input
+        class="form-control"
+        type="text"
+        id="formFile"
+        name="projectName"
+        ngModel
+      />
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="getItemsProyecto()">
+      Enviar
+    </button>
+  </form>
+
+  <ul class="list-group">
+    @for (item of proyecto; track item) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ item.nombre }}
+
+      <div class="containerBtn d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="navigateToProject(item.nombre, item.id)"
+        >
+          Ver más
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          (click)="toggleEditingItem(item.id)"
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="onDelete(item.id)"
+        >
+          Eliminar
+        </button>
+      </div>
+    </li>
+    @if ( editIndex === item.id ) {
+    <div class="input-group mb-3">
+      <input
+        [(ngModel)]="editName"
+        type="text"
+        class="form-control"
+        placeholder="Recipient's username"
+        aria-label="Recipient's username"
+        aria-describedby="button-addon2"
+      />
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-addon2"
+        (click)="onUpdate()"
+      >
+        enviar
+      </button>
+    </div>
+    } } @empty {
+    <p class="m-auto">Agrega un nuevo Proyecto</p>
+    }
+  </ul>
+</main>
