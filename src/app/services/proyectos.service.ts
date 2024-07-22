@@ -33,23 +33,24 @@ export class ProyectosService {
 
   /*  */
 
-  getTareasPorProyecto(proyectoId: number) {
+  // Obtiene las tareas de un proyecto específico por su ID
+  getTareasPorProyecto(proyectoId: number): Task[] {
     const proyecto = this.proyectos.find((p) => p.id === proyectoId);
     if (proyecto) {
       return proyecto.tareas;
     } else {
-      console.error('Proyecto no encontrado');
+      console.error(`Proyecto con ID ${proyectoId} no encontrado`);
       return [];
     }
   }
 
-  // Supongamos que tienes un método para agregar tareas a un proyecto específico.
-  agregarTareaAProyecto(proyectoId: number, tarea: any): void {
-    // Encuentra el proyecto que deseas actualizar
+  // Agrega una tarea a un proyecto específico por su ID
+  agregarTareaAProyecto(proyectoId: number, tarea: Task): void {
     const proyecto = this.proyectos.find((p) => p.id === proyectoId);
     if (proyecto) {
-      // Añade la tarea a la lista de tareas del proyecto
       proyecto.tareas.push(tarea);
+    } else {
+      console.error(`Proyecto con ID ${proyectoId} no encontrado`);
     }
   }
 }

@@ -1,6 +1,8 @@
 export interface Task {
   id: number;
-  name: string;
+  nombre: string;
+  descripcion: string;
+  completado: boolean;
 }
 
 export interface Project {

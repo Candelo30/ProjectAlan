@@ -6,12 +6,12 @@
   <!-- Formulario para agregar un nuevo proyecto -->
   <form #projectForm="ngForm" (ngSubmit)="onSubmit(projectForm)">
     <div class="mb-3">
-      <label for="projectName" class="form-label">Agregar Nuevo Proyecto</label>
+      <label for="projectName" class="form-label">Agregar Nueva tarea</label>
       <input
         class="form-control"
         type="text"
         id="projectName"
-        name="projectName"
+        name="taskName"
         ngModel
       />
     </div>
@@ -19,9 +19,13 @@
       Enviar
     </button>
   </form>
-  @for (item of ''; track item) {
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    {{ item }}
-  </li>
-  }
+  <ul class="list-group">
+    @for (item of proyecto ; track item) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      {{ item.nombre }}
+    </li>
+    }
+  </ul>
 </main>

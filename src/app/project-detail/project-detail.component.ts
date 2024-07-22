@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProyectosService } from '../services/proyectos.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Task } from '../models/project.model'; // Asegúrate de importar el modelo Task
 
 @Component({
   selector: 'app-project-detail',
@@ -11,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./project-detail.component.css'],
 })
 export class ProjectDetailComponent implements OnInit {
-  proyecto: any = null; // Lista de tareas del proyecto seleccionado
+  proyecto: Task[] = []; // Lista de tareas del proyecto seleccionado
   selectedProjectId: number | null = null;
 
   constructor(
@@ -31,10 +32,10 @@ export class ProjectDetailComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (this.selectedProjectId !== null) {
-      const tarea = {
-        id: new Date().getTime(), // Usar timestamp como ID de tarea
-        nombre: form.value.projectName,
-        descripcion: '',
+      const tarea: Task = {
+        id: Date.now(), // Usar timestamp como ID de tarea o utiliza otro método
+        nombre: form.value.taskName, // Asegúrate de que el nombre del campo en el formulario coincida
+        descripcion: form.value.taskDescription || '', // Obtener descripción si está disponible
         completado: false,
       };
 
@@ -43,6 +44,7 @@ export class ProjectDetailComponent implements OnInit {
         tarea
       );
       this.getTodos(); // Actualiza la lista de tareas
+      console.log(this.proyecto);
       form.reset();
     }
   }

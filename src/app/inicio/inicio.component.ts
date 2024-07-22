@@ -2,66 +2,65 @@ import { Component, OnInit } from '@angular/core';
 import { ProyectosService } from '../services/proyectos.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Project } from '../models/project.model';
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.css',
+  styleUrls: ['./inicio.component.css'], // Cambié styleUrl a styleUrls
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit {
+  proyecto: Project[] = [];
+  editIndex: number | null = null;
+  editName: string = '';
+
   constructor(
     private router: ActivatedRoute,
     private routers: Router,
-    public ItemsProyectoServices: ProyectosService
+    public itemsProyectoServices: ProyectosService
   ) {}
 
-  proyecto: any = [];
-  editIndex: number | null = null;
-  editName: string = '';
+  ngOnInit() {
+    this.proyecto = this.itemsProyectoServices.getItems();
+  }
 
   toggleEditingItem(id: number) {
     this.editIndex = this.editIndex === id ? null : id;
   }
 
-  getItemsProyecto() {
-    this.ItemsProyectoServices.proyectos = this.proyecto;
-  }
-
   onSubmit(form: NgForm) {
-    let cont = this.ItemsProyectoServices.proyectos.length;
-    let projectName = form.value.projectName;
+    const cont = this.itemsProyectoServices.proyectos.length;
+    const projectName = form.value.projectName;
 
-    if (projectName != '') {
-      this.ItemsProyectoServices.addItem(projectName, cont);
-      cont += 1;
+    if (projectName) {
+      this.itemsProyectoServices.addItem(projectName, cont);
       form.reset();
+      this.proyecto = this.itemsProyectoServices.getItems(); // Actualiza la lista
     }
   }
 
   onUpdate() {
     if (this.editIndex !== null) {
-      this.ItemsProyectoServices.updateItem(this.editIndex, this.editName);
+      this.itemsProyectoServices.updateItem(this.editIndex, this.editName);
       this.editIndex = null;
       this.editName = '';
-      this.proyecto = this.ItemsProyectoServices.getItems(); // Actualiza la lista
+      this.proyecto = this.itemsProyectoServices.getItems(); // Actualiza la lista
     }
   }
 
   onDelete(index: number) {
-    console.log(index);
-    this.ItemsProyectoServices.deleteItem(index);
-    this.proyecto = this.ItemsProyectoServices.getItems(); // Actualiza la lista
-    console.log(this.proyecto);
+    this.itemsProyectoServices.deleteItem(index);
+    this.proyecto = this.itemsProyectoServices.getItems(); // Actualiza la lista
   }
 
-  // Nueva función para navegar a los detalles del proyecto
   navigateToProject(nameItem: string, id: number) {
-    this.ItemsProyectoServices.nameItem = nameItem;
-    this.ItemsProyectoServices.selectID = id;
-    console.log(nameItem);
+    this.itemsProyectoServices.nameItem = nameItem;
+    this.itemsProyectoServices.selectID = id;
 
-    this.routers.navigate(['/project', nameItem]);
+    this.routers.navigate(['/project', id]).catch((err) => {
+      console.error('Error al navegar:', err);
+    });
   }
 }
